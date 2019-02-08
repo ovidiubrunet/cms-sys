@@ -1,0 +1,49 @@
+<div class="add-post-container">
+  <div fxLayout="row" fxLayoutAlign="center center" class="content">
+    <mat-card class="card">
+      <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+        <h3>Add a new post</h3>
+      </mat-card-title>
+      <mat-card-content>
+        <ng-template>Add post name and url</ng-template>
+        <div>
+          <app-dynamic-form [fields]="nameForm"></app-dynamic-form>
+        </div>
+
+        <form [formGroup]="templateFormGroup">
+          <ng-template>Select a template</ng-template>
+          <mat-card class='input-card'>
+          <mat-form-field>
+            <mat-select (selectionChange)="selectedV(selected)"  [(value)]="selected" matInput placeholder="Select a template" formControlName="template">
+              <mat-option >None</mat-option>
+              <mat-option *ngFor="let template of templates"
+                [value]="template.name">
+                {{ template.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          </mat-card>
+        </form>
+        <span  class="help-block" *ngIf="templateFormGroup.value.template">Add a post content</span>
+          <div *ngIf="templateFormGroup.value.template">
+            <mat-progress-bar *ngIf="loadingTemplate$ | async" mode="query" ></mat-progress-bar>
+            <div *ngIf="loaded"  [@simpleFadeAnimation]="'in'">
+                <app-dynamic-form [fields]="variablesForm" (submit)="submit($event)"></app-dynamic-form>
+                <mat-progress-bar *ngIf="loading$ | async" mode="query" ></mat-progress-bar>
+            </div>
+          </div>
+          <span class="help-block" *ngIf="!templateFormGroup.value.template">
+            Please select a template to generate the form.
+          </span>
+          <mat-card-footer>
+              <button mat-button (click)='onBack()'>
+                <i class="material-icons">
+                      arrow_back
+                </i>
+                Back to posts
+              </button>
+          </mat-card-footer>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

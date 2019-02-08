@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS users_roles (
+  user_id INTEGER,
+  role_id INTEGER,
+  PRIMARY KEY (role_id,user_id),
+  CONSTRAINT FK_USERS_ROLES_USER FOREIGN KEY (user_id) REFERENCES users (id),
+  CONSTRAINT FK_USERS_ROLES_ROLE FOREIGN KEY (role_id) REFERENCES role (id)
+);

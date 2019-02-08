@@ -1,0 +1,32 @@
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java10', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+    }
+
+    agent any
+
+    stages {
+
+        stage ('Build Stage') {
+            steps{
+                withMaven(maven : 'maven'){
+                dir('./events-dashboard-api'){
+                   sh "mvn clean install -Dmaven.test.skip=true"
+                    }
+                }
+            }
+        }
+
+        stage ('Docker Image Stage') {
+            steps{
+                dir('./events-dashboard-api'){
+                    sh('chmod -R 744 ./')
+                    sh('./mvnw install dockerfile:build')
+                }
+            }
+        }
+
+    }
+}

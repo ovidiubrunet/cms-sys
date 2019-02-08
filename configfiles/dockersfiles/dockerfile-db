@@ -1,0 +1,15 @@
+FROM postgres
+
+#copy this scripts in tthe init folder [by default postgres is looking in this folder to find *.sh]
+COPY ./init/create-databases.sh /docker-entrypoint-initdb.d/
+
+#install dos2unix to strip carriage return from dos system
+RUN apt-get update && apt-get install -y dos2unix
+
+RUN dos2unix ./docker-entrypoint-initdb.d/create-databases.sh
+
+RUN echo "host all  all    0.0.0.0/0  trust" >> var/lib/postgresql/data/pg_hba.conf
+
+RUN echo "listen_addresses='*'" >> var/lib/postgresql/data/postgresql.conf
+
+

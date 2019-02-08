@@ -1,0 +1,40 @@
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java8', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+    }
+
+    agent any
+
+    stages {
+
+         stage('build user') {
+               steps {
+                 wrap([$class: 'BuildUser']) {
+                   sh 'echo "${BUILD_USER}"'
+                 }
+               }
+             }
+
+        stage ('Build Stage') {
+            steps{
+                withMaven(maven : 'maven'){
+                dir('oauth2'){
+                   sh "mvn clean install"
+                    }
+                }   
+            }
+        }
+
+        stage ('Docker Image Stage') {
+            steps{
+                dir('oauth2'){
+                    sh('chmod -R 744 ./')
+                    sh('./mvnw install dockerfile:build')
+                }   
+            }
+        }
+
+    }
+}

@@ -1,0 +1,91 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/admin-dashboard/dist
+/template-generator/dist
+/admin-dashboard/tmp
+/admin-dashboard/out-tsc
+
+# dependencies
+/admin-dashboard/node_modules
+/admin-dashboard/dist
+/template-generator/dist
+/template-generator/node_modules
+
+# IDEs and editors
+/admin-dashboard/.idea
+/admin-dashboard/.project
+/admin-dashboard/.classpath
+/admin-dashboard/.c9/
+/admin-dashboard/*.launch
+/admin-dashboard/.settings/
+/admin-dashboard/*.sublime-workspace
+/admin-dashboard/.editorconfig
+
+# IDE - VSCode
+/admin-dashboard/.vscode/*
+/admin-dashboard/!.vscode/settings.json
+/admin-dashboard/!.vscode/tasks.json
+/admin-dashboard/!.vscode/launch.json
+/admin-dashboard/!.vscode/extensions.json
+
+# misc
+/admin-dashboard/.sass-cache
+/admin-dashboard/connect.lock
+/admin-dashboard/coverage
+/admin-dashboard/libpeerconnection.log
+/admin-dashboard/npm-debug.log
+/admin-dashboard/yarn-error.log
+/admin-dashboard/testem.log
+/admin-dashboard/typings
+/admin-dashboard/package-lock.json
+
+# System Files
+/admin-dashboard/.DS_Store
+/admin-dashboard/Thumbs.db
+
+#backend events-dashboard-api
+
+/backend/target/
+!./backend/mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+/events-dashboard-api/.apt_generated
+/events-dashboard-api/.classpath
+/events-dashboard-api/.factorypath
+/events-dashboard-api/.project
+/events-dashboard-api/.settings
+/events-dashboard-api/.springBeans
+/events-dashboard-api/.sts4-cache
+
+### IntelliJ IDEA ###
+/events-dashboard-api/.idea
+/events-dashboard-api/*.iws
+/events-dashboard-api/*.iml
+/events-dashboard-api/*.ipr
+
+### NetBeans ###
+/events-dashboard-api/nbproject/private/
+/events-dashboard-api/build/
+/events-dashboard-api/nbbuild/
+/events-dashboard-api/dist/
+/events-dashboard-api/nbdist/
+/events-dashboard-api/.nb-gradle/
+
+### All project ###
+
+
+
+#oauth2 files
+
+**.iml
+**/.settings
+**/.project
+**/.classpath
+**/.springBeans
+**/target
+.idea/
+**.bash_history
+**.log
+/.idea/encodings.xml
+.idea/*

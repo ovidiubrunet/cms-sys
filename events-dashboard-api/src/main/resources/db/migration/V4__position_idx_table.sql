@@ -1,0 +1,6 @@
+CREATE TABLE position_idx (
+id SERIAL primary key ,
+position BIGINT
+);
+
+CREATE SEQUENCE POSITION_IDX_SEQ START WITH 1 INCREMENT BY 1;

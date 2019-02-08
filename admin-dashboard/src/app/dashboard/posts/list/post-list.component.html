@@ -1,0 +1,93 @@
+<br />
+<div class="container">
+  <div class="container">
+    <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row" fxLayoutAlign="space-around center" class="content">
+      <div class="blocks">
+        <button button="submit" mat-raised-button color="primary" [routerLink]="['/secured/add-post']">
+          <mat-icon>add</mat-icon> Add Post
+        </button>
+      </div>
+    </div>
+  </div>
+  <br />
+  <div class="container">
+    <div fxLayout="row" fxLayoutAlign="center center" class="content">
+      <mat-card class="card">
+        <mat-card-title fxLayout.gt-xs="row" fxLayout.xs="column">
+          <h3>Recent Posts</h3>
+        </mat-card-title>
+        <mat-progress-bar *ngIf="postDataSourceService.loading$ | async" mode="query"></mat-progress-bar>
+        <mat-card-content>
+          <mat-form-field>
+            <input matInput placeholder="Search posts" #input />
+          </mat-form-field>
+          <div class="draggable-container mat-elevation-z8">
+            <mat-table class="draggable-list" cdkDropList (cdkDropListDropped)="drop($event)" #table [dataSource]="postDataSourceService"
+              matSort matSortActive="datePosted" matSortDirection="asc" matSortDisableClear [class.isMobile]>
+
+              <ng-container matColumnDef="datePosted">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Date Posted
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span class="mobile-label">Date Posted:</span>
+                  <div class="draggable-custom-placeholder" *cdkDragPlaceholder></div>
+                  {{ element.datePosted | date: 'd/M/y' }}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Post Name
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span class="mobile-label">Post Name:</span>
+                  <button [routerLink]="['/secured/post', element.id]" mat-button>
+                    {{ element.name }}
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Actions
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <mat-list>
+                    <mat-list-item>
+                      <button (click)="openDeleteDialog(element.id)" mat-button>
+                          <mat-icon class="icon">delete</mat-icon>
+                        </button>
+                      <button [routerLink]="['/secured/post/edit/', element.id]" mat-button>
+                        <mat-icon class="icon">edit</mat-icon>
+                      </button>
+                    </mat-list-item>
+                  </mat-list>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="url">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>
+                  URL
+                </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <span class="mobile-label">Post Name:</span>
+                  <button mat-button (click)="goToPage(element.url)">
+                    {{ element.url }}
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row class="draggable-box" [cdkDragData]="row" cdkDrag *matRowDef="let row; columns: displayedColumns"
+                (click)="onRowClicked(row)"></mat-row>
+            </mat-table>
+            <mat-paginator [length]="postDataSourceService.count$ | async" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]">
+            </mat-paginator>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,103 @@
+
+
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java10', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+        SLACK_COLOR_DANGER  = '#E01563'
+        SLACK_COLOR_INFO    = '#6ECADC'
+        SLACK_COLOR_WARNING = '#FFC300'
+        SLACK_COLOR_GOOD    = '#3EB991'
+        SLACK_CHANNEL_1 = 'event-dashboard'
+    }
+
+    agent any
+
+stages {
+
+     stage ('SET es6') {
+            steps{
+                dir('./admin-dashboard'){
+                       sh "../../../../modifyES.sh"
+                    }
+            }
+        }
+
+       
+
+       stage ('Build Stage') {
+            steps{
+                echo '${WORKSPACE}'
+                echo '${MAVEN_HOME}'
+                withMaven(maven : 'maven'){
+                    dir('./oauth2'){
+                        sh "mvn clean install"
+                    }
+                    dir('./admin-dashboard'){
+                       sh "mvn clean install"
+                    }
+                    dir('./guest-dashboard'){
+                       sh "mvn clean install"
+                    }
+                    dir('./events-dashboard-api'){
+                       sh "mvn clean install"
+                    }
+                }
+            }
+        }
+
+        stage ('Sonar analysis') {
+                steps{
+                withSonarQubeEnv('sonarqube'){
+                    dir('./oauth2'){
+                        sh "mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.password=" 
+                    }
+                    dir('./admin-dashboard'){
+                        sh "mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.password="
+                    }
+                    dir('./guest-dashboard'){
+                        sh "mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.password="
+                    }
+                    dir('./events-dashboard-api'){
+                        sh "mvn sonar:sonar -Dsonar.login=$SONAR_LOGIN -Dsonar.password="
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always{
+            script{
+                echo currentBuild.result
+                echo 'The build result is ${currentBuild.result}'
+            }
+        }
+        changed {
+            echo 'Build result changed'
+            script {
+                if(currentBuild.currentResult == 'SUCCESS') {
+                     echo "Sending message to Slack"
+                     slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                        channel: "${params.SLACK_CHANNEL_1}",
+                        message: "@here *SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+                }
+                else if(currentBuild.currentResult == 'ABORTED') {
+                      echo "Sending message to Slack"
+                      slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                            channel: "${params.SLACK_CHANNEL_1}",
+                            message: "@here *ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+        failure {
+            echo "Sending message to Slack"
+                         slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                            channel: "${params.SLACK_CHANNEL_1}",
+                            message: "@here *FAILED*:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+
+        } // failure
+    }
+}

@@ -1,0 +1,37 @@
+<mat-sidenav-container class="app-sidenav-container" [class.dark-theme]="isDarkTheme" [dir]="dir">
+  <mat-sidenav #sidenav class="app-sidenav mat-elevation-z10" [opened]="!isScreenSmall()" [mode]="isScreenSmall() ? 'over' : 'side'">
+    <mat-toolbar>
+      <div class="logo">
+        <div class="logo-inner">
+          <a href="/secured" class="Header-branding-logo"><img src="/assets/cegeka-logo-white.png" alt="Cegeka"></a>
+        </div>
+      </div>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+
+    <div class="mat-menu">
+     <mat-nav-list>
+      <mat-list-item [routerLink]="['/secured/posts']" routerLinkActive="activated">
+        <a matLine>
+          <mat-icon class="material-icons">folder</mat-icon> <span class="mat-panel-title-section">Posts</span>
+        </a>
+      </mat-list-item>
+      <mat-list-item [routerLink]="['/secured/event-registration']" routerLinkActive="activated">
+        <a matLine>
+          <mat-icon class="material-icons">calendar_today</mat-icon>  <span class="mat-panel-title-section">Event Registration</span>
+        </a>
+      </mat-list-item>
+    </mat-nav-list>
+    </div>
+
+  </mat-sidenav>
+
+  <div class="app-sidenav-content">
+    <app-toolbar (toggleSidenav)="sidenav.toggle()">
+    </app-toolbar>
+    <div class="wrapper">
+      <app-main-content></app-main-content>
+    </div>
+  </div>
+
+</mat-sidenav-container>

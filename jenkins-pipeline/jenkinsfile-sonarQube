@@ -1,0 +1,28 @@
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java8', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+    }
+
+    agent any
+
+    stages {
+    stage('Access permision') {
+                steps {
+                    dir('./configfiles/dockersfiles'){
+                     sh 'chmod 777 run.sh'
+                    }
+                   }
+                 }
+        stage('Deploy') {
+            steps {
+                withMaven(maven : 'maven'){
+                   dir('./configfiles'){
+                   sh "mvn -f sonar-pom.xml clean install"
+                    }
+                }   
+               }
+             }
+    }
+}

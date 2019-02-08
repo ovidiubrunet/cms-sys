@@ -1,0 +1,38 @@
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java10', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+    }
+
+    agent any
+
+    stages {
+        stage('Build Admin-Dashboard') {
+            steps {
+                withMaven(maven : 'maven'){
+                   dir('./admin-dashboard'){
+                   sh "mvn package"
+                    }
+                }   
+               }
+             }
+        stage('Build Guest-Dashboard') {
+                    steps {
+                        withMaven(maven : 'maven'){
+                           dir('./guest-dashboard'){
+                           sh "mvn package"
+                            }
+                        }
+                       }
+                     }
+        stage('Build Image') {
+            steps {
+                dir('./configfiles/dockersfiles') {
+                    sh('docker build -f ./dockerfile-nginx -t nginx .')
+                }
+            }
+        }
+        
+    }
+}

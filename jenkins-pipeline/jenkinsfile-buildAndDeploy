@@ -1,0 +1,56 @@
+pipeline {
+
+    agent any
+
+    stages {
+
+       stage("Build jobs") {
+          steps{
+                build('clearcontainers')
+                build('sonar')
+                build('quickbuild')
+                build('buildImages')   
+                build('deploy')
+        }
+
+       }
+
+    }
+
+    post {
+        always{
+            script{
+        echo currentBuild.result
+        echo 'The build result is ${currentBuild.result}'
+            }
+        }
+    changed {
+            echo 'Build result changed'
+            script {
+                if(currentBuild.currentResult == 'SUCCESS') {
+                     echo "Sending message to Slack"
+                     slackSend (color: "${env.SLACK_COLOR_GOOD}",
+                        channel: "${params.SLACK_CHANNEL_1}",
+                        message: "@here *SUCCESS:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+                }
+                else if(currentBuild.currentResult == 'ABORTED') {
+                      echo "Sending message to Slack"
+                      slackSend (color: "${env.SLACK_COLOR_WARNING}",
+                            channel: "${params.SLACK_CHANNEL_1}",
+                            message: "@here *ABORTED:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+                }
+            }
+        }
+
+    failure {
+        echo "Sending message to Slack"
+                     slackSend (color: "${env.SLACK_COLOR_DANGER}",
+                        channel: "${params.SLACK_CHANNEL_1}",
+                        message: "@here *FAILED*:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER}")
+      
+    } // failure
+
+    
+    }
+
+}

@@ -1,0 +1,28 @@
+pipeline {
+
+    agent any
+
+    environment {
+        JAVA_HOME = tool name: 'java10', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+        SLACK_COLOR_DANGER  = '#E01563'
+        SLACK_COLOR_INFO    = '#6ECADC'
+        SLACK_COLOR_WARNING = '#FFC300'
+        SLACK_COLOR_GOOD    = '#3EB991'
+        SLACK_CHANNEL_1 = 'event-dashboard'
+    }
+
+    stages {
+
+       stage("Clear images") {
+           steps {
+               dir('./configfiles'){
+                sh("chmod 777 ./countcontainers.sh")
+                sh("./countcontainers.sh")
+               }
+           }
+       }
+
+    }
+
+}

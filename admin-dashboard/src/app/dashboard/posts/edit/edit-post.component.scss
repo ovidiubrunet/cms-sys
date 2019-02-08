@@ -1,0 +1,52 @@
+.post-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .post-form > * {
+    width: 100%;
+  }
+  
+  .close {
+    width: 100%;
+    background-color: rgb(236, 238, 229);
+    color: grey;
+  }
+  
+  .help-block {
+    color: grey;
+    font-size: 0.8em;
+  }
+  
+  // Styles for the heading in the content and for the dropdown item.
+  h2.fancy,
+  .ck-heading_heading2_fancy {
+    color: #ff0050;
+    font-size: 17px;
+  }
+  
+  .input-card {
+    margin: 8px;
+    background-color: whitesmoke;
+  }
+  
+  .add-post-container {
+    padding: 100px 0px 0px 0px;
+  }
+  
+  .card {
+    min-width: 80%;
+  }
+  
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 500px;
+    min-width: 100%;
+  }
+  
+  .template-loading-progress-bar {
+      margin-left: 4px;
+    }
+  
+  

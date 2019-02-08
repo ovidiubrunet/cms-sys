@@ -1,0 +1,1 @@
+ALTER table posts add expire_date date ;

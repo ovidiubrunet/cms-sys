@@ -1,0 +1,31 @@
+pipeline {
+
+    environment {
+        JAVA_HOME = tool name: 'java10', type: 'jdk'
+        MAVEN_HOME = tool name: 'maven', type: 'maven'
+    }
+
+    agent any
+
+stages {
+       stage ('Create Image Stage') {
+            steps{
+                echo '${WORKSPACE}'
+                withMaven(maven : 'maven'){
+                dir('../../quickbuild/workspace/oauth2'){
+                   sh('chmod -R 744 ./')
+                   sh('./mvnw install dockerfile:build')
+                    }
+                dir('../../quickbuild/workspace/events-dashboard-api'){
+                    sh('chmod -R 744 ./')
+                   sh('./mvnw install dockerfile:build')
+                    }
+                }
+                dir('../../quickbuild/workspace/configfiles/dockersfiles') {
+                    sh('docker build -f ./dockerfile-nginx -t nginx .')
+                }
+
+            }
+        }
+    }
+}

@@ -1,0 +1,2 @@
+-- INSERT INTO hibernate_sequen (next_val)
+-- VALUES (1);
