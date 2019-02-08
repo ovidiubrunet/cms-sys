@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>10</java.version>
+		<java.version>1.8</java.version>
 		<springsecurity.version>4.1.1.RELEASE</springsecurity.version>
 		<docker.image.prefix>oauth2</docker.image.prefix>
 		<oauth2.version>2.2.1.RELEASE</oauth2.version>
