@@ -34,7 +34,7 @@ import java.util.concurrent.Executors;
 import static org.springframework.web.reactive.function.server.RouterFunctions.resources;
 
 @Configuration
-public class WebConfiguration {
+public class WebConfiguration  {
 
     private final Log logger = LogFactory.getLog(this.getClass());
 

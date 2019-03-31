@@ -8,7 +8,6 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.web.reactive.config.EnableWebFlux;
 
 @EnableWebFlux
-//@SpringBootApplication
 public class EventsDashboardApplication {
     public static void main(String[] args) {
 
