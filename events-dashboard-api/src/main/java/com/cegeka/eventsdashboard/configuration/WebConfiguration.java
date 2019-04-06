@@ -120,7 +120,6 @@ public class WebConfiguration  {
                         .andOther(resourceRouter)
                         .filter((req, next) -> {
                             logger.debug("path: " + req.uri().getRawPath());
-                            System.out.println("path: " + req.uri().getRawPath());
                             if (req.uri().getRawPath().contains("secured/") && !req.method().equals(HttpMethod.OPTIONS)) {
                                 oauth2.isAuthenticated(req);
                             }
