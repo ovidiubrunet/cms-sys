@@ -51,3 +51,5 @@ In order to serve static context from nginx you will first need to set a route. 
 ### Nginx reverse proxy
 
 Nginx is also used as a reverse proxy to serve all the request for the BE server. When a request on the `/events-api` is made, nginx will set the headers needed to avoid the cors origin problem and it will send the request on the BE server.
+
+    this.postDataSourceService = new PostsDataSourceService(this.postService, this.notificationService);
