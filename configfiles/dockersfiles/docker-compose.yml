@@ -43,9 +43,11 @@ services:
         environment:
             EVENTS_DASHBOARD_DB_URL: 172.18.18.13:5432
             EVENTS_DASHBOARD_OAUTH2_URL: 172.18.18.11:9000
-            EVENTS_DASHBOARD_RESOURCES_FOLDER: /uploads
+            EVENTS_DASHBOARD_RESOURCES_FOLDER: /home/uploads/
         depends_on:
           - "db"
+        volumes:
+          - E:/JAVA/APPS/CEGEKA/uploads:/home/uploads
     db:
         build:
            context: ./

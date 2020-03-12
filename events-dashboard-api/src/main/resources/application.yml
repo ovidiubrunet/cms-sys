@@ -8,8 +8,7 @@ oauth2-server:
   url: http://${EVENTS_DASHBOARD_OAUTH2_URL}
 
 upload:
-#  path: ${EVENTS_DASHBOARD_RESOURCES_FOLDER}
-   path: E:/JAVA/APPS/CEGEKA/events-dashboard/events-dashboard-api/uploads/
+   path: ${EVENTS_DASHBOARD_RESOURCES_FOLDER}
 
 spring:
   flyway:

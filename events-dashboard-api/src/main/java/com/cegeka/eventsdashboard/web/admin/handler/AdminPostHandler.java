@@ -58,13 +58,13 @@ public class AdminPostHandler {
     }
 
     public Mono<ServerResponse> getOnePostById(ServerRequest request) {
-        return this.postService.
-                findById(request.pathVariable("id")).
-                flatMap(JsonWriter::write).
-                flatMap(ServerResponseWithCors::ok).
-                onErrorResume(NotFoundResourceException.class, ServerResponseWithCors::notFound).
-                onErrorResume(JsonProcessingException.class, ServerResponseWithCors::internalServerError).
-                subscribeOn(scheduler);
+        return this.postService
+                .findById(request.pathVariable("id"))
+                .flatMap(JsonWriter::write)
+                .flatMap(ServerResponseWithCors::ok)
+                .onErrorResume(NotFoundResourceException.class, ServerResponseWithCors::notFound)
+                .onErrorResume(JsonProcessingException.class, ServerResponseWithCors::internalServerError)
+                .subscribeOn(scheduler);
     }
 
     /**
@@ -72,20 +72,20 @@ public class AdminPostHandler {
      * @return
      */
     public Mono<ServerResponse> save(ServerRequest request) {
-         return requestHandler
-                 .requireValidBody(body -> {
-                        Mono<PostDTO> postMono = body.map(addPost -> addPost);
-                        return postMono
-                                .flatMap(postService::savePost)
-                                .flatMap((post) -> ServerResponseWithCors.ok().body(fromObject(new APIResponse(APIResponse.ResponseType.SUCCESS, Collections.singletonList(post.getUrl())))))
-                                .onErrorResume(NotFoundResourceException.class, ServerResponseWithCors::notFound)
-                                .onErrorResume(ForbiddenResourceOverrideException.class, ServerResponseWithCors::forbidden)
-                                .onErrorResume(VariableRequiredException.class, ServerResponseWithCors::badRequest)
-                                .onErrorResume(PostAlreadyExistsException.class, ServerResponseWithCors::badRequest)
-                                .subscribeOn(scheduler);
+        return requestHandler
+                .requireValidBody(body -> {
+                    Mono<PostDTO> postMono = body.map(addPost -> addPost);
+                    return postMono
+                            .flatMap(postService::savePost)
+                            .flatMap((post) -> ServerResponseWithCors.ok().body(fromObject(new APIResponse(APIResponse.ResponseType.SUCCESS, Collections.singletonList(post.getUrl())))))
+                            .onErrorResume(NotFoundResourceException.class, ServerResponseWithCors::notFound)
+                            .onErrorResume(ForbiddenResourceOverrideException.class, ServerResponseWithCors::forbidden)
+                            .onErrorResume(VariableRequiredException.class, ServerResponseWithCors::badRequest)
+                            .onErrorResume(PostAlreadyExistsException.class, ServerResponseWithCors::badRequest)
+                            .subscribeOn(scheduler);
 
-                } , request, PostDTO.class)
-                 .onErrorResume(BadRequestException.class, ServerResponseWithCors::badRequest);
+                }, request, PostDTO.class)
+                .onErrorResume(BadRequestException.class, ServerResponseWithCors::badRequest);
     }
 
     public Mono<ServerResponse> updatePost(ServerRequest request) {
@@ -102,7 +102,7 @@ public class AdminPostHandler {
                             .onErrorResume(PostAlreadyExistsException.class, ServerResponseWithCors::badRequest)
                             .subscribeOn(scheduler);
 
-                } , request, PostDTO.class)
+                }, request, PostDTO.class)
                 .onErrorResume(BadRequestException.class, ServerResponseWithCors::badRequest);
     }
 
@@ -113,7 +113,7 @@ public class AdminPostHandler {
     public Mono<ServerResponse> saveOrder(ServerRequest request) {
         return request
                 .bodyToMono(ReorderDTO.class)
-                .flatMap( reorderService::saveOrder)
+                .flatMap(reorderService::saveOrder)
                 .flatMap((post) -> ServerResponseWithCors.ok().body(fromObject(new APIResponse(APIResponse.ResponseType.SUCCESS, Collections.singletonList(post.getCurrentPost().getPostPositionIdx().getPosition().toString())))))
                 .subscribeOn(scheduler);
     }

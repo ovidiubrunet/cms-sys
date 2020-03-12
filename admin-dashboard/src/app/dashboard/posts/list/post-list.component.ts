@@ -16,6 +16,7 @@ import { Reorder } from '../../models/reorder';
 import { PostService } from '../../services/post.service';
 import { PostsDataSourceService } from '../../services/posts-data-source.service';
 import { ConfirmationDialogComponent } from '../delete/confirmation-dialog.component';
+import { NotificationService } from 'src/app/service/notification.service';
 
 @Component({
   selector: 'app-posts',
@@ -31,6 +32,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
     private postService: PostService,
      public dialog: MatDialog,
      public postDataSourceService: PostsDataSourceService,
+     public notificationService: NotificationService
      ) { }
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -62,6 +64,7 @@ export class PostListComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     // set progress bar
     this.postDataSourceService.loadingSubject.next(true);
+    this.postDataSourceService = new PostsDataSourceService(this.postService, this.notificationService);
     this.postDataSourceService.loadPosts();
   }
 

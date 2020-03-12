@@ -41,9 +41,6 @@ public class WebConfiguration  {
     @Autowired
     Environment environment;
 
-    @Value("file:${upload.path}")
-    private Resource res;
-
     @Bean
     Scheduler jdbcScheduler(Environment env) {
         return Schedulers
@@ -96,8 +93,9 @@ public class WebConfiguration  {
     }
 
     @Bean
-    RouterFunction<ServerResponse> resourceRouter() {
-        return ResourceRouter.resourceRoutes(res);
+    RouterFunction<ServerResponse> resourceRouter(Environment env) {
+        System.out.println(env.getRequiredProperty("upload.path", String.class));
+        return ResourceRouter.resourceRoutes(env.getRequiredProperty("upload.path", String.class));
     }
 
     @Bean
